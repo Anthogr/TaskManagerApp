@@ -1,0 +1,114 @@
+{% if tasks|length %}
+    {% for section in sections %}
+        <div class="flex-column">
+            <div class="flex-section">
+            <h2>{{ section }}</h2>
+            <!---------------------------------TEST EDIT SECTION---------------------------------->
+            <button class="bttn btn-section" onclick="openEditForm(event)" data-target="#form-section">
+                <!-- <i class="fa-solid fa-pen-to-square" style="pointer-events:none"></i> -->
+                <i class="fa-solid fa-pen" style="pointer-events:none"></i>
+            </button>
+            </div>
+            <!------------------------------------------------------------------------------------>
+            <hr class="line">
+            {% for task in tasks %}
+                {% if task.section == section %}
+                    <div class="flex-row">
+                        {{ task.content_md | safe }}
+                        <div class="spacer"></div>
+                        <form action="{{ url_for('update_priority_status', task_id=task.id) }}" method="POST">
+                            <button type="submit" class="priority-{{ task.priority }}">
+                                {% if task.priority == "cool" %}
+                                    <i class="fa-solid fa-fire fa-1x"></i>
+                                {% elif task.priority == "warm" %}
+                                    <i class="fa-solid fa-fire fa-beat-fade fa-1x" style="--fa-animation-duration: 2s;"></i>
+                                {% elif task.priority == "hot" %}
+                                    <i class="fa-solid fa-fire fa-beat-fade fa-1x" style="--fa-animation-duration: 1s;"></i>
+                                {% endif %}
+                            </button>
+                        </form>
+                        <form action="{{ url_for('update_stuck_status', task_id=task.id) }}" method="POST">
+                            <button type="submit" class="stuck-{{ task.stuck }}">
+                                {% if task.stuck == "off" %}
+                                    <i class="fa fa-xmark fa-1x"></i> <!--fa fa-circle-xmark-->
+                                {% elif task.stuck == "on" %}
+                                    <i class="fa fa-xmark fa-fade fa-1x" style="--fa-animation-duration: 2s;"></i> <!--fa fa-circle-xmark-->
+                                {% endif %}
+                            </button>
+                        </form>
+                        <div class="spacer"></div>
+                        <form action="{{ url_for('update_task_status', task_id=task.id) }}" method="POST">
+                            <button type="submit" class="bttn btn-{{ task.status }}">
+                                {% if task.status == "toDo" %}
+                                    <i class="fa fa-xmark"></i>
+                                {% elif task.status == "progress" %}
+                                    <i class="fa-solid fa-spinner fa-spin"></i>
+                                {% elif task.status == "done" %}
+                                    <i class="fa fa-check"></i>
+                                {% endif %}
+                            </button>
+                        </form>
+                        <button class="bttn btn-edit" onclick="openEditForm(event)" data-target="#form-{{ task.id }}"><i
+                                class="fa-solid fa-pen-to-square" style="pointer-events:none"></i></button>
+                        <div class="form-popup" id="form-{{ task.id }}">
+                            <form action="{{ url_for('edit_task', task_id=task.id) }}" class="form-container" method="POST">
+                                <h2>Edit task</h2>
+                                <hr class="line-form">
+                                <label for="content"><b>Task</b></label>
+                                <input type="text" name="content" value="{{ task.content }}" required>
+                                <button type="submit" class="btn">Edit</button>
+                                <button type="button" class="btn cancel" onclick="closeEditForm(event)"
+                                    data-dismiss=".form-popup">Cancel</button>
+                            </form>
+                        </div>
+                        <button class="bttn btn-delete" onclick="openDeleteForm(event)" data-target="#confirm-{{ task.id }}"><i
+                                class="fa-solid fa-trash-can" style="pointer-events:none"></i></button>
+                        <div class="form-popup" id="confirm-{{ task.id }}">
+                            <form action="{{ url_for('delete_task', task_id=task.id) }}" class="form-container" method="POST"">
+                                                        <p>Are you sure you want to remove this task ?</p>
+                                                        <button type=" submit" class="btn remove">Remove</button>
+                                <button type="button" class="btn cancel" onclick="closeDeleteForm(event)"
+                                    data-dismiss=".form-popup">Cancel</button>
+                            </form>
+                        </div>
+                    </div>
+                    <hr class="line">
+                {% endif %}
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% else %}
+    <div class="item">
+        <i class="fa-solid fa-computer fa-3x"></i>
+    </div>
+    <div class="item">
+        <i class="fa-solid fa-arrow-right-long fa-3x"></i>
+    </div>
+    <div class="item">
+        <i class="fa-solid fa-power-off fa-3x"></i>
+    </div>
+    <div class="item">
+        <i class="fa-solid fa-arrow-right-long fa-3x"></i>
+    </div>
+    <div class="item">
+        <i class="fa-solid fa-person-walking fa-3x"></i>
+    </div>
+    <div class="item">
+        <i class="fa-solid fa-arrow-right-long fa-3x"></i>
+    </div>
+    <div class="item">
+        <i class="fa-solid fa-plane fa-3x"></i>
+    </div>
+    <div class="item">
+        <i class="fa-solid fa-arrow-right-long fa-3x"></i>
+    </div>
+    <div class="item">
+        <i class="fa-solid fa-person-hiking fa-3x"></i>
+    </div>
+    <div class="item">
+        <i class="fa-solid fa-arrow-right-long fa-3x"></i>
+    </div>
+    <div class="item">
+        <i class="fa-solid fa-mountain fa-3x"></i>
+    </div>
+{% endif %}
