@@ -6,7 +6,7 @@ Task manager
 
 <button class="btn-add" onclick="openAddForm()">New task <i class="fa-solid fa-plus" style="pointer-events:none"></i></button>
 <div class="form-popup" id="myForm">
-    <form name="AddTaskForm" action="{{ url_for('add_task') }}" class="form-container" method="POST" data-turbo-frame="data_frame">
+    <form name="AddTaskForm" action="{{ url_for('add_task') }}" class="form-container" method="POST">
         <h2>New task</h2>
         <hr class="line-form">
         <label for="section"><b>Section</b></label>
