@@ -46,24 +46,24 @@
         {% block content %}
         {% endblock %}
         <footer style="padding:60px; padding-top:0;">
-            <p>© 2022</p>
+            <p>© 2023</p>
         </footer>
     </div>
     <script>
         var InitValueTask;
         function openAddForm() {
-            document.querySelector("#section").value = ""
-            document.querySelector("#content").value = ""
+            document.querySelector("#section_id").value = ""
+            document.querySelector("#header_id").value = ""
             document.getElementById("myForm").style.display = "block";
         }
         function cancelAddForm() {
             document.getElementById("myForm").style.display = "none";
         }
         function submitAddForm() {
-            // IF input field for section or content is empty -> do not close form so attribute required in <input> field works
+            // IF input field for section or content is empty -> do not close form so attribute "required" in <input> field works
             // ELSE close form
-            if (document.querySelector("#section").value === "" || 
-            document.querySelector("#content").value === "") {
+            if (document.querySelector("#section_id").value === "" || 
+            document.querySelector("#header_id").value === "") {
             } 
             else {
                 document.getElementById("myForm").style.display = "none";

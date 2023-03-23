@@ -1,5 +1,5 @@
 {% if tasks|length %}
-    {% for section in sections %}
+    {% for tasks_per_section, section in zip(tasks, sections) %}
         <div class="flex-column">
             <div class="flex-section">
                 <h2>{{ section }}</h2>
@@ -10,8 +10,8 @@
                     <form action="{{ url_for('edit_section', section_name=section) }}" class="form-container" method="POST">
                         <h2>Edit section</h2>
                         <hr class="line-form">
-                        <label for="content"><b>Section</b></label>
-                        <input type="text" name="content" value="{{ section }}" required pattern="[A-Za-z0-9-_ ]{3,30}">
+                        <label for="section_in"><b>Section</b></label>
+                        <input type="text" name="section_in" value="{{ section }}" required pattern="[A-Za-z0-9-_ ]{3,30}">
                         <button type="submit" class="btn">Edit</button>
                         <button type="button" class="btn cancel" onclick="closeEditForm(event)"
                             data-dismiss=".form-popup">Cancel</button>
@@ -19,12 +19,33 @@
                 </div>
             </div>
             <hr class="line">
-            {% for task in tasks %}
-                {% if task.section == section %}
+            {% for task in tasks_per_section %}
+                <div class="flex-row">
+                        <div class="flex-column-arrows">
+                            {% if task.order > 1 %}
+                            <form action="{{ url_for('update_order',  task_order=task.order, task_section=task.section, value=-1) }}" method="POST">
+                                <button type="submit" class="btn-arrow-up">
+                                    <i class="fa-solid fa-caret-up"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                            {% if task.order < tasks_per_section|length %}
+                            <form action="{{ url_for('update_order', task_section=task.section, task_order=task.order, value=1) }}" method="POST">
+                                <button type="submit" class="btn-arrow-down">
+                                    <i class="fa-solid fa-caret-down"></i>
+                                </button>
+                            </form>
+                            {% endif %}
+                            {% if task.order == tasks_per_section|length and task.order == 1 %}
+                                <button type="submit" class="btn-arrow-down">
+                                    <i class="fa-solid fa-caret-down"></i>
+                                </button>
+                            {% endif %}
+                        </div>
                     <div class="flex-row">
-                        {{ task.content_md | safe }}
+                        {{ md.markdown(task.header) | safe }}
                         <div class="spacer"></div>
-                        <form action="{{ url_for('update_priority_status', task_id=task.id) }}" method="POST">
+                        <form action="{{ url_for('update_priority', task_id=task.id) }}" method="POST">
                             <button type="submit" class="priority-{{ task.priority }}">
                                 {% if task.priority == "cool" %}
                                     <i class="fa-solid fa-fire fa-1x"></i>
@@ -35,17 +56,20 @@
                                 {% endif %}
                             </button>
                         </form>
-                        <form action="{{ url_for('update_stuck_status', task_id=task.id) }}" method="POST">
-                            <button type="submit" class="stuck-{{ task.stuck }}">
-                                {% if task.stuck == "off" %}
+                        <form action="{{ url_for('update_stuck', task_id=task.id) }}" method="POST">
+                            {% if not task.stuck %}
+                                <button type="submit" class="stuck-off">
                                     <i class="fa fa-xmark fa-1x"></i> <!--fa fa-circle-xmark-->
-                                {% elif task.stuck == "on" %}
+                                </button>
+                            {% elif task.stuck %}
+                                <button type="submit" class="stuck-on">
                                     <i class="fa fa-xmark fa-fade fa-1x" style="--fa-animation-duration: 2s;"></i> <!--fa fa-circle-xmark-->
-                                {% endif %}
-                            </button>
+                                </button>
+                            {% endif %}
+                            
                         </form>
                         <div class="spacer"></div>
-                        <form action="{{ url_for('update_task_status', task_id=task.id) }}" method="POST">
+                        <form action="{{ url_for('update_status', task_id=task.id) }}" method="POST">
                             <button type="submit" class="bttn btn-{{ task.status }}">
                                 {% if task.status == "toDo" %}
                                     <i class="fa fa-xmark"></i>
@@ -63,11 +87,10 @@
                             <form action="{{ url_for('edit_task', task_id=task.id) }}" class="form-container" method="POST">
                                 <h2>Edit task</h2>
                                 <hr class="line-form">
-                                <label for="content"><b>Task</b></label>
-                                <input type="text" name="content" value="{{ task.content }}" required>
+                                <label for="header_in"><b>Task</b></label>
+                                <input type="text" name="header_in" value="{{ task.header }}" required>
                                 <button type="submit" class="btn">Edit</button>
-                                <button type="button" class="btn cancel" onclick="closeEditForm(event)"
-                                    data-dismiss=".form-popup">Cancel</button>
+                                <button type="button" class="btn cancel" onclick="closeEditForm(event)" data-dismiss=".form-popup">Cancel</button>
                             </form>
                         </div>
                         <button class="bttn btn-delete" onclick="openDeleteForm(event)" data-target="#confirm-{{ task.id }}">
@@ -81,8 +104,8 @@
                             </form>
                         </div>
                     </div>
+                </div>
                     <hr class="line">
-                {% endif %}
             {% endfor %}
         </div>
     {% endfor %}

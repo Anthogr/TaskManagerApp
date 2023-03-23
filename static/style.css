@@ -87,6 +87,7 @@ nav ul li a:hover{
   margin-top: 30px;
   margin-left: 90px;
   overflow-x:auto;
+  TEST Overflow Y (MAke window content not extending at bottom e.g. bottom of window sta)
 }
 
 .flex-column {
@@ -103,37 +104,47 @@ nav ul li a:hover{
   align-items: flex-start;
 }
 
-.contain .flex-row .flex-column .flex-row {
-  display: flex;
-  flex-direction: row;
-  align-items:center;
-  transition: all 0.2s;
-}
-
-.contain .flex-row .flex-column .flex-row:hover {
-/* .flex-column .flex-row:hover { */
-  background-color: rgba(63, 81, 89, 0.2);
-}
-
 .contain .flex-row .flex-column {
   display: flex;
   flex-direction: column;
-  justify-content:center;
+  justify-content: center;
 }
 
-/* Formating for section*/
+/*=====================SECTION FORMATTING=====================*/
 .contain .flex-row .flex-column .flex-section {
   display: flex;
   flex-direction: row;
   justify-content: center;
 }
 
-.contain .flex-row .flex-column .flex-section h2{
+.contain .flex-row .flex-column .flex-section h2 {
   margin: 10px;
   text-align: center;
   font-size: large;
   font-weight: bold;
   letter-spacing: 2px;
+}
+/*==============================================*/
+
+/*=====================TASK FORMATTING=====================*/
+.contain .flex-row .flex-column .flex-row .flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  transition: all 0.2s;
+}
+
+.contain .flex-row .flex-column .flex-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  width: 100%;
+}
+
+.contain .flex-row .flex-column .flex-row .flex-row:hover {
+/* .flex-column .flex-row:hover { */
+  background-color: rgba(63, 81, 89, 0.2);
+  transition: all 0.2s;
 }
 
 .flex-row p {
@@ -195,6 +206,7 @@ nav ul li a:hover{
   margin-right: 20px;
   color: rgba(87, 113, 124);
 }
+/*==============================================*/
 
 .item {
   display: flex;
@@ -221,6 +233,39 @@ nav ul li a:hover{
 }
 .contain .flex-row .flex-column .flex-section .btn-section:hover {
   color: rgba(87, 113, 124);
+}
+/*==============================================*/
+
+/*=====================ARROWS UP/DOWN=====================*/
+.contain .flex-row .flex-column .flex-row .flex-column-arrows {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+.contain .flex-row .flex-column .flex-row .flex-column-arrows .btn-arrow-up,
+.contain .flex-row .flex-column .flex-row .flex-column-arrows .btn-arrow-down {
+  display: flex;
+  align-items: center;
+  background-color: transparent;
+  border: none;
+  color: transparent;
+  font-size: x-large;
+  padding: 0;
+  transition: all 0.2s;
+  height: 20px;
+}
+
+.contain .flex-row .flex-column .flex-row:hover .flex-column-arrows .btn-arrow-up,
+.contain .flex-row .flex-column .flex-row:hover .flex-column-arrows .btn-arrow-down {
+  color: rgba(87, 113, 124, 0.5);
+}
+
+.contain .flex-row .flex-column .flex-row .flex-column-arrows .btn-arrow-up:hover {
+  color: rgb(77, 139, 80);
+}
+
+.contain .flex-row .flex-column .flex-row .flex-column-arrows .btn-arrow-down:hover {
+  color: rgb(161, 92, 63);
 }
 /*==============================================*/
 
@@ -391,11 +436,21 @@ nav ul li a:hover{
 }
 /*=================================================================*/
 
+/* LINE SETTINGS */
+/* Set width at 100% if you want line to cover arrows up and down */
 .line{
     border-top: 1px solid rgb(151, 151, 151);
-    width: 100%;
+    width: 764px; 
     margin: 0px;
+    align-self: flex-end;
+    transition: all 0.2s;
 }
+
+/* .contain .flex-row .flex-column:hover .line {
+  width: 100%;
+  align-self: flex-end;
+  transition: all 0.2s;
+} */
 
 .line-form{
     border-top: 1px solid rgb(151, 151, 151);

@@ -4,18 +4,18 @@ Task manager
 {% endblock %}
 {% block content %}
 
-<button class="btn-add" onclick="openAddForm()">New task <i class="fa-solid fa-plus" style="pointer-events:none"></i></button>
+<button class="btn-add" onclick="openAddForm()"><i class="fa-solid fa-plus" style="pointer-events:none"></i> New task</button>
 <div class="form-popup" id="myForm">
     <form name="AddTaskForm" action="{{ url_for('add_task') }}" class="form-container" method="POST">
         <h2>New task</h2>
         <hr class="line-form">
-        <label for="section"><b>Section</b></label>
-        <input type="text" list="sectionList" id="section" name="section" placeholder="Where task will be stored..." required>
+        <label for="section_in"><b>Section</b></label>
+        <input type="text" list="sectionList" id="section_id" name="section_in" placeholder="Where task will be stored..." required>
             <datalist id="sectionList">
                 {% include 'sectionList.html' %}
             </datalist>
-        <label for="content"><b>Task</b></label>
-        <input type="text" id="content" name="content" placeholder="Task description..." required>
+        <label for="header_in"><b>Task</b></label>
+        <input type="text" id="header_id" name="header_in" placeholder="Task description..." required>
         <button type="submit" class="btn" onclick="submitAddForm()">Add</button>
         <button type="button" class="btn cancel" onclick="cancelAddForm()">Cancel</button>
     </form>
