@@ -1,7 +1,7 @@
 {% if tasks|length %}
     {% for tasks_per_section, section in zip(tasks, sections) %}
         <div class="flex-column">
-            <div class="flex-section">
+            <div class="section-header">
                 <h2>{{ section }}</h2>
                 <button class="bttn btn-section" onclick="openEditForm(event)" data-target="#form-{{ '_'.join(section.split(' ')) }}"> <!-- Used "'_'.join(section.split(' '))" instead of "section" because spaces create issue in recognizing data-target-->
                     <i class="fa-solid fa-pen" style="pointer-events:none"></i>
@@ -13,7 +13,7 @@
                         <label for="section_in"><b>Section</b></label>
                         <input type="text" name="section_in" value="{{ section }}" required pattern="[A-Za-z0-9-_ ]{3,30}">
                         <button type="submit" class="btn">Edit</button>
-                        <button type="button" class="btn cancel" onclick="closeEditForm(event)"
+                        <button type="button" class="btn cancel" onclick="cancelEditForm(event)"
                             data-dismiss=".form-popup">Cancel</button>
                     </form>
                 </div>
@@ -90,7 +90,7 @@
                                 <label for="header_in"><b>Task</b></label>
                                 <input type="text" name="header_in" value="{{ task.header }}" required>
                                 <button type="submit" class="btn">Edit</button>
-                                <button type="button" class="btn cancel" onclick="closeEditForm(event)" data-dismiss=".form-popup">Cancel</button>
+                                <button type="button" class="btn cancel" onclick="cancelEditForm(event)" data-dismiss=".form-popup">Cancel</button>
                             </form>
                         </div>
                         <button class="bttn btn-delete" onclick="openDeleteForm(event)" data-target="#confirm-{{ task.id }}">
@@ -100,13 +100,33 @@
                             <form action="{{ url_for('delete_task', task_id=task.id) }}" class="form-container" method="POST">
                                 <p>Are you sure you want to remove this task ?</p>
                                 <button type=" submit" class="btn remove">Remove</button>
-                                <button type="button" class="btn cancel" onclick="closeDeleteForm(event)" data-dismiss=".form-popup">Cancel</button>
+                                <button type="button" class="btn cancel" onclick="cancelDeleteForm(event)" data-dismiss=".form-popup">Cancel</button>
                             </form>
                         </div>
                     </div>
                 </div>
                     <hr class="line">
             {% endfor %}
+            <div class="align-right">
+                <button class="btn-add2" onclick="openAddForm2(event)" data-target="#form-{{ '_'.join(section.split(' ')) }}-2"><i class="fa-solid fa-plus" style="pointer-events:none"></i> <span class="hide" onclick="openAddForm2(event)" data-target="#form-{{ '_'.join(section.split(' ')) }}-2">New task</span></button>
+            </div>
+            <div class="form-popup" id="form-{{ '_'.join(section.split(' ')) }}-2">
+                <form name="AddTaskForm" action="{{ url_for('add_task') }}" class="form-container" method="POST">
+                    <h2>New task</h2>
+                    <hr class="line-form">
+                    <label for="section_in"><b>Section</b></label>
+                    <input type="text" list="sectionList" id="section_id" name="section_in" value="{{ section }}" required>
+                    <datalist id="sectionList">
+                        {% include 'sectionList.html' %}
+                    </datalist>
+                    <label for="header_in"><b>Task</b></label>
+                    <input type="text" id="header_id" name="header_in" placeholder="Task description..." required>
+                    <button type="submit" class="btn">Add</button>
+                    <button type="button" class="btn cancel" onclick="cancelAddForm2(event)" data-dismiss=".form-popup">Cancel</button>
+                </form>
+            </div>
+
+
         </div>
     {% endfor %}
 {% else %}

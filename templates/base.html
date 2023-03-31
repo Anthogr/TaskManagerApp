@@ -51,32 +51,65 @@
     </div>
     <script>
         var InitValueTask;
+        var InitValueSection;
+
+        // function openAddForm() {
+        //         document.querySelector("#section_id").value = ""
+        //         document.querySelector("#header_id").value = ""
+        //         document.getElementById("myForm").style.display = "block";
+        //     }
+        // function cancelAddForm() {
+        //     document.getElementById("myForm").style.display = "none";
+        // }
+        // function submitAddForm() {
+        //     // IF input field for section or content is empty -> do not close form so attribute "required" in <input> field works
+        //     // ELSE close form
+        //     if (document.querySelector("#section_id").value === "" ||
+        //         document.querySelector("#header_id").value === "") {
+        //     }
+        //     else {
+        //         document.getElementById("myForm").style.display = "none";
+        //     }
+        // }
+
         function openAddForm() {
-            document.querySelector("#section_id").value = ""
-            document.querySelector("#header_id").value = ""
-            document.getElementById("myForm").style.display = "block";
-        }
-        function cancelAddForm() {
-            document.getElementById("myForm").style.display = "none";
+                const elem = document.getElementById("myForm");
+                elem.querySelector('#section_id').value = "";
+                elem.querySelector('#header_id').value = "";
+                elem && (elem.style.display = 'block');
         }
         function submitAddForm() {
-            // IF input field for section or content is empty -> do not close form so attribute "required" in <input> field works
-            // ELSE close form
-            if (document.querySelector("#section_id").value === "" || 
-            document.querySelector("#header_id").value === "") {
-            } 
-            else {
-                document.getElementById("myForm").style.display = "none";
+                const elem = document.getElementById("myForm");
+                elem && (elem.style.display = 'none');
             }
-            
+        function cancelAddForm() {
+                const elem = document.getElementById("myForm");
+                elem && (elem.style.display = 'none');
+            }
+
+        function openAddForm2(event) {
+                const target = event.target.dataset.target;
+                const elem = document.querySelector(target);
+                InitValueSection = elem.querySelector('#section_id').getAttribute('value'); // Get the initial task input field value when user open edit form
+                elem.querySelector('#header_id').value = "";
+                elem && (elem.style.display = 'block');
         }
+
+        function cancelAddForm2(event) {
+                const target = event.target.dataset.dismiss;
+                const elem = event.target.closest(target);
+                elem.querySelector('#section_id').value = InitValueSection // When user cancel form, the task input field value is reset to its initial value
+                elem && (elem.style.display = 'none');
+            }
+
+
         function openEditForm(event) {
                 const target = event.target.dataset.target;
                 const elem = document.querySelector(target);
                 InitValueTask = elem.querySelector('input').getAttribute('value'); // Get the initial task input field value when user open edit form
                 elem && (elem.style.display = 'block');
             }
-        function closeEditForm(event) {
+        function cancelEditForm(event) {
                 const target = event.target.dataset.dismiss;
                 const elem = event.target.closest(target);
                 elem.querySelector('input').value = InitValueTask // When user cancel form, the task input field value is reset to its initial value
@@ -87,7 +120,7 @@
                 const elem = document.querySelector(target);
                 elem && (elem.style.display = 'block');
             }
-        function closeDeleteForm(event) {
+        function cancelDeleteForm(event) {
                 const target = event.target.dataset.dismiss;
                 const elem = event.target.closest(target);
                 elem && (elem.style.display = 'none');
