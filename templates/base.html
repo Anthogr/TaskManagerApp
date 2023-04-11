@@ -76,11 +76,21 @@
                 const elem = document.getElementById("myForm");
                 elem.querySelector('#section_id').value = "";
                 elem.querySelector('#header_id').value = "";
+                elem.querySelector('#description_id').value = "";
                 elem && (elem.style.display = 'block');
         }
         function submitAddForm() {
                 const elem = document.getElementById("myForm");
-                elem && (elem.style.display = 'none');
+                // IF input field for section OR content is empty: 
+                //     do not close form so attribute "required" in <input> field works
+                // ELSE close form
+                if (elem.querySelector("#section_id").value === "" ||
+                    elem.querySelector("#header_id").value === "") {
+                }
+                else {
+                 elem && (elem.style.display = 'none');
+                }
+                
             }
         function cancelAddForm() {
                 const elem = document.getElementById("myForm");
