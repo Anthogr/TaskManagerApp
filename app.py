@@ -47,7 +47,7 @@ class Task(db.Model):
     section        = db.Column(db.Text     , default="Miscellaneous")
     order          = db.Column(db.Integer)
     header         = db.Column(db.Text)
-    description    = db.Column(db.Text     , default=None)
+    description    = db.Column(db.Text     , default="")
     status         = db.Column(db.String   , default="toDo")
     priority       = db.Column(db.String   , default="cool")
     stuck          = db.Column(db.Boolean  , default=False)
@@ -175,12 +175,15 @@ def taskManager():
 
 @app.route('/add', methods=['POST'])
 def add_task():
-    header = request.form.get('header_in')
     section = request.form.get('section_in')
+    header = request.form.get('header_in')
+    description = request.form.get('description_in') 
+    if description is not None:
+        description = description.replace("\n", "  \n") # replace '\n' by '  \n' (two spaces) which means new line in markdown
     #------------TASK ORDER---------------------------
     tasks = Task.query.filter_by(section=section).all()
     order = len(tasks)+1
-    task = Task(section=section, date=datetime.datetime.now(), header=header, order=order) 
+    task = Task(section=section, date=datetime.datetime.now(), header=header, description=description, order=order) 
     # IF you want LOCAL time, install pytz
     # newYorkTz = pytz.timezone("America/New_York") 
     # timeInNewYork = datetime.now(newYorkTz)
@@ -210,6 +213,21 @@ def update_status(task_id):
         turbo.update(htmlContent, target="flex-row")
     ])
 
+@app.route('/task-extended/<int:task_id>', methods=('POST',))
+def task_extend_view(task_id):
+    task = Task.query.get(task_id)
+    if not task.extended_view:
+        task.extended_view = True
+    elif task.extended_view:
+        task.extended_view = False
+    db.session.commit()
+    
+    # Update only specific parts of main html page
+    htmlSectionList, htmlContent = renderElems()
+    return turbo.stream([
+        turbo.update(htmlSectionList, target="sectionList"),
+        turbo.update(htmlContent, target="flex-row")
+    ])
 
 @app.route('/priority/<int:task_id>', methods=('POST',))
 def update_priority(task_id):
