@@ -42,9 +42,38 @@
                                 </button>
                             {% endif %}
                         </div>
-                    <div class="flex-row">
-                        {{ md.markdown(task.header) | safe }}
+                    <div class="flex-row-3">
+                        {% if not task.extended_view %}
+                            {{ md.markdown(task.header) | safe }}
+                        {% elif task.extended_view %}
+                            <div class="flex-col-extend-view">
+                                {{ md.markdown(task.header) | safe }}
+                                <p style="color: rgb(46 143 212);">Description:</p>
+                                <div style="margin-bottom:10px;">
+                                    {{ md.markdown(task.description) | safe }}
+                                </div>
+                            </div>
+                        {% endif %}
                         <div class="spacer"></div>
+                        <form action="{{ url_for('task_extend_view', task_id=task.id) }}" method="POST">
+                            {% if not task.extended_view %}
+                                {% if task.description == '' %}
+                                    <button type="submit" class="extend-off-empty">
+                                        <i class="fa-solid fa-angle-down"></i>
+                                    </button>
+                                {% else %}
+                                    <button type="submit" class="extend-off-full">
+                                        <i class="fa-solid fa-angle-down"></i>
+                                    </button>
+                                {% endif %}
+
+                            {% elif task.extended_view %}
+                            <button type="submit" class="extend-on">
+                                <i class="fa-solid fa-angle-up"></i>
+                            </button>
+                            {% endif %}
+                        </form>
+
                         <form action="{{ url_for('update_priority', task_id=task.id) }}" method="POST">
                             <button type="submit" class="priority-{{ task.priority }}">
                                 {% if task.priority == "cool" %}
