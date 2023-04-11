@@ -8,14 +8,18 @@ Task manager
 <div class="form-popup" id="myForm">
     <form name="AddTaskForm" action="{{ url_for('add_task') }}" class="form-container" method="POST">
         <h2>New task</h2>
-        <hr class="line-form">
         <label for="section_in"><b>Section</b></label>
-        <input type="text" list="sectionList" id="section_id" name="section_in" placeholder="Where task will be stored..." required>
+        <input type="text" list="sectionList" id="section_id" name="section_in" placeholder="Where task will be stored..." required pattern="[A-Za-z0-9-_ ]{3,30}">
             <datalist id="sectionList">
                 {% include 'sectionList.html' %}
             </datalist>
-        <label for="header_in"><b>Task</b></label>
-        <input type="text" id="header_id" name="header_in" placeholder="Task description..." required>
+        <label for="header_in"><b>Task header</b></label>
+        <input type="text" id="header_id" name="header_in" placeholder="Short description..." required>
+
+        <label for="description_in"><b>Task description</b></label>
+        <!-- <br> -->
+        <textarea id="description_id" name="description_in" rows="3" cols="38" placeholder="Details..."></textarea>
+        <!-- </br> -->
         <button type="submit" class="btn" onclick="submitAddForm()">Add</button>
         <button type="button" class="btn cancel" onclick="cancelAddForm()">Cancel</button>
     </form>
